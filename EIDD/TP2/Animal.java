@@ -1,78 +1,122 @@
-import java.util.Random;
+public class Animal{
+	String nom;
+	String espece;
+	char sexe; // 'm' ou 'f'
+	int poids;
+	int age;
+	int faim=5; // valeur defaut 
+	
+	int id;
+	
+	private static int nmax=0;
+	private static String[][] incompatibilite = {{"chien","chat"},{"lion","gazelle"},{"chat","souris"}};
+	
+	
+	/**
+	constructeur vide : remplit le champ id avec une valeur unique
+	*/
+	public Animal(){
+		Animal.nmax++;
+		this.id=nmax;
+	}
+		
+	public Animal(String n, String e){
+		this();
+		this.nom=n;
+		this.espece=e;
+		this.age=0;	
+	}
+	
+	public Animal(String n,String e, char g, int p, int a){
+		this(n,e);
+		this.sexe=g;
+		this.poids=p;
+		this.age=a;
+	}
+		
+	public String toString(){
+		String s="";
+		//s=s+"Animal no "+this.id+" : ";
+		s=s+"Je m'appelle "+this.nom;
+		s+=", je suis un";
+		if(this.sexe=='m'){
+			s+=" "+this.espece+" male";
+		}
+		else if(this.sexe=='f'){
+			s+="e "+this.espece+" femelle";
+		}	
+		s+=" je pese "+this.poids+" kilos, et j'ai "+this.age+" ans";
+		s+=" mon niveau de faim est "+this.faim;
+		return s;
+	}
+	
+	public boolean equals(Object b){
+			Animal bb = (Animal) b;
+			return this.id==b.id;		
+	}
+	
+	public void nourrir(){
+		this.faim-=5;
+		if(this.faim<0) this.faim=0;		
+	}
 
-public class Animal {
-    String nom;
-    char sexe;
-    int poids;
-    String espece;
-    int age;
-    int faim;
+	public static Animal plusGros(Animal[] t ){
+		int imax=0;
+		for(int i =1; i<t.length; i++){
+			if(t[i]!=null){
+				if(t[i].poids>t[imax].poids){
+					imax=i;
+				}
+			}
+		}
+		return t[imax];	
+	}
+	
+	
+	/**
+	fonction permettant d'implémenter la reproduction entre animaux
+	@param a un Animal
 
-    public Animal (String n, char s, int p, String e, int a){
-        this.nom = n;
-        if (s != 'm' && s != 'f'){
-            System.out.println("Erreur de sexe");
-        }
-        else {
-            this.sexe = s;
-        }
-        this.poids = p;
-        this.espece = e;
-        this.age = a;
-    }
-    
-    public Animal(){}
-
-    public static String description(Animal a){
-        String genre = "";
-        if (a.sexe == 'm'){
-            genre += "male";
-        }
-        else if (a.sexe == 'f'){
-            genre += "femelle";
-        }
-        String desc = "Je m'appele " +a.nom+ ", je suis un " +a.espece+ " " +genre+ ", j'ai " +a.age+ " ans et je pese " +a.poids+ " kg.";
-        return desc;
-    }
-
-    public static void nourrir (Animal a){
-        a.faim -= 5;
-        if (a.faim < 0){
-            a.faim = 0;
-        }
-    }
-
-    public static int plusGros(Animal[] tab){
-        int max = tab[0].poids;
-        for(int i=0; i<tab.length; i++) {
-            if (tab[i].poids > max){
-                max = tab[i].poids;
-            }
-        }
-        return max;
-    }
-
-    public Animal reproduction(Animal a){
-        // on cree un nouvel animal :
-        Animal bebe = new Animal();
-        int ind1, ind2, min = a.poids, max = this.poids;
-        Random random = new Random();
-        char[] choix = {'m','f'};
-        if (a.sexe != this.sexe && a.faim<5 && this.faim<5 && a.espece.equals(this.espece)){
-            bebe.espece = a.espece;
-            ind1 = random.nextInt(2);
-            bebe.sexe = choix[ind1];
-            if (a.poids > this.poids){
-                min = this.poids;
-                max = a.poids;
-            }
-            ind2 = min + random.nextInt(max-min);
-            bebe.poids = ind2;
-        }
-        return bebe;
-    }
-
-
-
-
+	@return un Animal issu de la reproduction de this et a
+	*/
+	public Animal reproduction(Animal a){
+		if(a.espece.equals(this.espece) && a.sexe!=this.sexe && a.faim<=5 && this.faim<=5){
+			
+			Animal bb = new Animal();
+			bb.nom=a.nom+this.nom;
+			bb.espece=a.espece;
+			if(Math.random()>0.5){
+				bb.sexe='f';
+			}
+			else{
+				bb.sexe='m';
+			}
+			
+			bb.poids=(int) (a.poids+(this.poids-a.poids)*Math.random());
+			
+			return bb;						
+		}
+		else{
+			return null;
+		}
+	}
+	
+	
+	public boolean estCompatibleAvec(Animal a){
+		for(int i = 0 ; i<Animal.incompatibilite.length; i++){
+				if(	this.espece.equals(incompatibilite[i][0]) && a.espece.equals(incompatibilite[i][1])
+					|| a.espece.equals(incompatibilite[i][0]) && this.espece.equals(incompatibilite[i][1])
+				){
+					return false;			
+				}
+						
+		}
+		return true;
+	}
+	
+	
+	
 }
+	
+
+
