@@ -2,15 +2,20 @@
  * Implementation des abres binaires avec valeurs entières
  */
 
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
 
 public class BinTree {
     /* A COMPLETER: attributs privés */
-	
+	private NodeInt root;
+
     /**
      *  Constructeur d'arbre vide (racine = null)
      */
     public BinTree() {
         /* A COMPLETER */
+        this.root = null;
     }
     
     /** 
@@ -18,6 +23,7 @@ public class BinTree {
      */
     public BinTree(NodeInt r) {
         /* A COMPLETER */
+        this.root = r;
         if (!isBST()) {
             throw new IllegalArgumentException("Input tree is not a binary search tree!");
         }
@@ -32,7 +38,7 @@ public class BinTree {
     @Override
     public String toString() {
         /* A COMPLETER */
-        return "";
+        return this.root.toString();
     }
 
     /**
@@ -40,7 +46,7 @@ public class BinTree {
      */
     public boolean isEmpty() {
         /* A COMPLETER */
-        return false;
+        return this.root == null;
     }
     
     /**
@@ -49,7 +55,27 @@ public class BinTree {
      */
     public int height() {
 	    /* A COMPLETER */
-        return -1;
+        if (this.isEmpty()){
+            return -1;
+        }
+        else {
+            return countHeight(this.root);
+        }
+    }
+
+    public int countHeight(NodeInt node){
+        int l=0;
+        int r=0;
+        if (node.isLeaf()){
+            return 0;
+        }
+        if (node.getLson() != null){
+            l=countHeight(node.getLson());
+        }
+        if (node.getRson() != null){
+            r=countHeight(node.getRson());
+        }
+        return 1 + Math.max(l,r);
     }
 
     /**
@@ -57,7 +83,23 @@ public class BinTree {
      */
     public boolean isBST() {
 	    /* A COMPLETER */
-        return false;
+        boolean[] ok = new boolean[1];
+        ok[0] = true;
+        this.parcours(ok,this.root);
+	    return ok[0];
+    }
+
+    public void parcours(boolean[] ok,NodeInt node){
+        if(node.getLson()!=null){
+            this.parcours(ok, node.getLson());
+        }
+        if((node.getLson()!=null && node.getLson().getVal()>node.getVal()) || 
+                (node.getRson()!= null && node.getRson().getVal()<node.getVal())){
+            ok[0]=false;
+        }
+        if(node.getRson()!=null){
+            this.parcours(ok, node.getRson());
+        }
     }
 
     /**
@@ -74,12 +116,45 @@ public class BinTree {
      */
     public int less(Integer x) {
 	    /* A COMPLETER */
-        return -1;
+        if(this.isEmpty()){
+            return -1;
+        }
+        Deque<NodeInt> stack = new ArrayDeque<NodeInt>();
+        stack.push(root);
+        int count=0;
+        while(true){
+            if(stack.isEmpty()){
+                return count;
+            }
+            NodeInt curr = stack.pop();
+            if(curr.getVal()<x){
+                count++;
+            }
+            NodeInt right = curr.getRson();
+            if (right != null) {
+                stack.push(right);
+            }
+            NodeInt left = curr.getLson();
+            if (left != null) {
+                stack.push(left);
+            }
+        }
     }
 
     public boolean contains(Integer x) {
         /* A COMPLETER */
-        return false;
+        NodeInt noeud = this.root;
+        while(true){
+            if(x.equals(noeud.getVal())){
+                return true;
+            } else if(x<noeud.getVal()) {
+                if(noeud.getLson()!=null){noeud=noeud.getLson();}
+                else{return false;}
+            } else {
+                if(noeud.getRson()!=null){noeud=noeud.getRson();}
+                else{return false;}
+            }
+        }
     }
 
     public static BinTree buildTree1() {
