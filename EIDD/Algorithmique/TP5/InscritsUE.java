@@ -16,6 +16,7 @@ public class InscritsUE {
      */
     public InscritsUE() {
         /* A COMPLETER */
+        this.inscrits = new HashSet<NoEtud>(100);
     }
 
     /**
@@ -26,7 +27,14 @@ public class InscritsUE {
      */
     public boolean add(NoEtud n) {
         /* A COMPLETER */
-        return false;
+        if (this.inscrits.contains(n) || this.inscrits.size() >= 100){
+            return false;
+        }
+        else {
+            this.inscrits.add(n);
+            return true;
+        }
+        
     }
 
     /**
@@ -34,7 +42,11 @@ public class InscritsUE {
      */
     public String toString() {
         /* A COMPLETER */
-        return "";
+        String str = "";
+        for (NoEtud inscrit : inscrits) {
+            str = str + inscrit.toString() + System.getProperty("line.separator");
+        }
+        return str;
     }
 
     /**
@@ -43,9 +55,25 @@ public class InscritsUE {
      */
     public void loadFromFile(String fname) {
         /* A COMPLETER */
+        try {
+            File fich = new File(fname);
+            Scanner scan = new Scanner(fich);
+            while(scan.hasNextInt())
+            {
+                this.inscrits.add(new NoEtud(scan.nextInt()));
+            }
+            scan.close();
+        }
+        catch(FileNotFoundException e)
+        {
+            System.out.println("Pas de fichier");
+        }
     }
 
     public static void main(String[] args) {
         /* A COMPLETER */
+        InscritsUE ins = new InscritsUE();
+        ins.loadFromFile("tp05.dat");
+        System.out.println(ins.toString());
     }
 }
