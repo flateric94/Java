@@ -113,6 +113,7 @@ public class Distance {
         String s1 = "";
         String s2 = ""; 
         this.distance();
+        
         int i = this.word1.length();
         int j = this.word2.length();
         do {
