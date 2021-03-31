@@ -233,7 +233,6 @@ public class Distance {
 
         System.out.println("Score " + score + "/" + nTests);
     }
-
     public static void main(String[] args) {
         testImplementation();
     }
