@@ -1,0 +1,8 @@
+# Talisman definitions
+# Room name, Talisman, force du talisman comprise entre 1 et 100
+Entrance,Welcome booklet,89
+Room of anti-patterns,Parallel arrays
+Clean room,73
+Room of the streams,Java XP,67
+Room of the bugs,Debugger manual
+Room of the endless loop,Missing exit condition,76

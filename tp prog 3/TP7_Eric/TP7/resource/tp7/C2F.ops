@@ -1,0 +1,4 @@
+# Conversion °C ➤ °F
+mul 9.
+div 5.
+add 32.

@@ -1,0 +1,20 @@
+# Step 1: Grab the Function
+M S
+T Function
+# Step 1: Grab the debugger manual
+M E
+M E
+T Debugger manual
+# Step 3: Get the Java XP (can't go through DRY room yet)
+M W
+M W
+M S
+# Hopefully in Room of the streams
+T Java XP
+# Step 4: Reach exit 
+M N
+M E
+M E
+M E
+M S
+M S
